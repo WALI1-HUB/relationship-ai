@@ -15,10 +15,16 @@ app = Flask(__name__,
 
 # Initialize Groq client
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    # Fallback for local testing if .env is not set, but do not hardcode in production
-    pass 
-client = Groq(api_key=GROQ_API_KEY)
+client = None
+
+def get_groq_client():
+    global client
+    if client is None:
+        api_key = os.environ.get("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY environment variable is not set")
+        client = Groq(api_key=api_key)
+    return client
 
 # Database Setup
 # Use /tmp for Netlify (serverless environment), otherwise use local path
@@ -106,7 +112,8 @@ def chat():
     conversation_history.append({"role": "user", "content": user_message})
 
     try:
-        completion = client.chat.completions.create(
+        groq_client = get_groq_client()
+        completion = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=conversation_history,
             temperature=0.7,
