@@ -116,6 +116,7 @@ def chat():
 
     try:
         groq_client = get_groq_client()
+        print(f"Groq client initialized successfully")
         completion = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=conversation_history,
@@ -137,7 +138,9 @@ def chat():
         return jsonify({"response": ai_response})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        error_msg = str(e)
+        print(f"Chat error: {error_msg}")
+        return jsonify({"error": error_msg}), 500
 
 if __name__ == '__main__':
     app.run(debug=False)
