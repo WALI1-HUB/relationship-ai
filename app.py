@@ -18,7 +18,7 @@ client = Groq(api_key=GROQ_API_KEY)
 
 # Database Setup
 # Use /tmp for Netlify (serverless environment), otherwise use local path
-if os.environ.get('NETLIFY'):
+if os.environ.get('APP_ENV') == 'production':
     DB_NAME = "/tmp/relationship_ai.db"
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
