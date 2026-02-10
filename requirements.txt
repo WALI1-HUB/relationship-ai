@@ -3,3 +3,4 @@ groq
 serverless-wsgi
 werkzeug
 python-dotenv
+gunicorn

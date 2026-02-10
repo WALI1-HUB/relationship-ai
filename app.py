@@ -17,9 +17,12 @@ if not GROQ_API_KEY:
 client = Groq(api_key=GROQ_API_KEY)
 
 # Database Setup
-# Use absolute path for database to avoid issues on PythonAnywhere
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_NAME = os.path.join(BASE_DIR, "relationship_ai.db")
+# Use /tmp for Netlify (serverless environment), otherwise use local path
+if os.environ.get('NETLIFY'):
+    DB_NAME = "/tmp/relationship_ai.db"
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DB_NAME = os.path.join(BASE_DIR, "relationship_ai.db")
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)

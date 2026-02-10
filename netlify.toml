@@ -1,7 +1,13 @@
 [build]
+  command = "echo 'build complete'"
   functions = "functions"
+  publish = "."
 
 [[redirects]]
   from = "/*"
   to = "/.netlify/functions/api"
   status = 200
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["relationship_ai.db", "templates/**", "static/**"]
