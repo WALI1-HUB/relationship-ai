@@ -48,7 +48,10 @@ def init_db():
     conn.close()
 
 # Initialize DB on startup
-init_db()
+try:
+    init_db()
+except Exception as e:
+    print(f"Warning: Database initialization failed: {e}")
 
 # Store conversation history in memory (for context)
 # In a real production app, we would load this from the DB for the specific session.
