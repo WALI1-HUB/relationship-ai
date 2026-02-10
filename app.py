@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__)
+# Setup Flask with proper static/template paths for Netlify
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, 
+            static_folder=os.path.join(BASE_DIR, 'static'),
+            template_folder=os.path.join(BASE_DIR, 'templates'))
 
 # Initialize Groq client
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
@@ -21,7 +25,6 @@ client = Groq(api_key=GROQ_API_KEY)
 if os.environ.get('APP_ENV') == 'production':
     DB_NAME = "/tmp/relationship_ai.db"
 else:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     DB_NAME = os.path.join(BASE_DIR, "relationship_ai.db")
 
 def init_db():
